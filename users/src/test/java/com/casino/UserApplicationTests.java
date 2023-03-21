@@ -164,5 +164,5 @@ public class UserApplicationTests {
         mvc.perform(delete("/api/v1/users/{id}", 1))
                 .andExpect(status().isNotFound());
     }
-
+    
 }

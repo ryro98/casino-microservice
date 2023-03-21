@@ -92,4 +92,5 @@ public class UserController {
             return ResponseEntity.status(NOT_FOUND).body("User with given id does not exist.");
         }
     }
+
 }
