@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -99,6 +101,68 @@ public class UserApplicationTests {
                         .contentType(APPLICATION_JSON)
                         .content(resourceFileLoader.getJson("create_user_empty_name_entry.json")))
                 .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void testCreateUser_conflict_nameExists() throws Exception {
+        mvc.perform(post("/api/v1/users")
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user_entry.json")))
+                .andExpect(status().isCreated());
+        mvc.perform(post("/api/v1/users")
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user_entry.json")))
+                .andExpect(status().isConflict());
+    }
+    @Test
+    public void testUpdateUser_ok() throws Exception {
+        mvc.perform(post("/api/v1/users")
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user_entry.json")))
+                .andExpect(status().isCreated());
+        mvc.perform(put("/api/v1/users/{id}", 1)
+                .contentType(APPLICATION_JSON)
+                .content(resourceFileLoader.getJson("create_user2_entry.json")))
+                .andExpect(status().isOk());
+        mvc.perform(get("/api/v1/users"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("test2")));
+    }
+    @Test
+    public void testUpdateUser_notFound() throws Exception {
+        mvc.perform(put("/api/v1/users/{id}", 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user2_entry.json")))
+                .andExpect(status().isNotFound());
+    }
+    @Test
+    public void testUpdateUser_conflict_nameExists() throws Exception {
+        mvc.perform(post("/api/v1/users")
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user_entry.json")))
+                .andExpect(status().isCreated());
+        mvc.perform(post("/api/v1/users")
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user2_entry.json")))
+                .andExpect(status().isCreated());
+        mvc.perform(put("/api/v1/users/{id}", 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user2_entry.json")))
+                .andExpect(status().isConflict());
+    }
+    @Test
+    public void testDeleteUser_ok() throws Exception {
+        mvc.perform(post("/api/v1/users")
+                        .contentType(APPLICATION_JSON)
+                        .content(resourceFileLoader.getJson("create_user_entry.json")))
+                .andExpect(status().isCreated());
+        mvc.perform(delete("/api/v1/users/{id}", 1))
+                .andExpect(status().isNoContent());
+    }
+    @Test
+    public void testDeleteUser_notFound() throws Exception {
+        mvc.perform(delete("/api/v1/users/{id}", 1))
+                .andExpect(status().isNotFound());
     }
 
 }

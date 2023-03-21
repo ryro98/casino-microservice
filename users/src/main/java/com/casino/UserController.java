@@ -56,7 +56,40 @@ public class UserController {
         if (request.getName().isEmpty()) {
             return ResponseEntity.status(BAD_REQUEST).body("Name cannot be empty.");
         }
+        if (userRepository.existsUserByName(request.getName())) {
+            return ResponseEntity.status(CONFLICT).body("User with given name already exist.");
+        }
         User user = userService.createUser(request);
         return ResponseEntity.status(CREATED).body(user);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(value = OK)
+    public ResponseEntity<?> updateUser(
+            @PathVariable(name = "id") Integer id,
+            @RequestBody UserCreateRequest request) throws UserNotFoundException {
+        if (userRepository.existsById(id)) {
+            if (request.getName().isEmpty()) {
+                return ResponseEntity.status(BAD_REQUEST).body("Name cannot be empty.");
+            }
+            if (userRepository.existsUserByName(request.getName())) {
+                return ResponseEntity.status(CONFLICT).body("User with given name already exist.");
+            }
+            User user = userService.updateUser(id, request);
+            return ResponseEntity.status(OK).body(user);
+        } else {
+            return ResponseEntity.status(NOT_FOUND).body("User with given id does not exist.");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(value = NO_CONTENT)
+    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Integer id) {
+        if (userRepository.existsById(id)) {
+            userService.deleteUser(id);
+            return ResponseEntity.status(NO_CONTENT).body("");
+        } else {
+            return ResponseEntity.status(NOT_FOUND).body("User with given id does not exist.");
+        }
     }
 }

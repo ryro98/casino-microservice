@@ -36,4 +36,15 @@ public class UserService {
 
         return user;
     }
+
+    public User updateUser(Integer id, UserCreateRequest request) throws UserNotFoundException {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        user.setName(request.getName());
+        userRepository.save(user);
+        return user;
+    }
+
+    public void deleteUser(Integer id) {
+        userRepository.deleteById(id);
+    }
 }
