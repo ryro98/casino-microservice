@@ -2,10 +2,10 @@ server:
   port: 8080
 spring:
   application:
-    name: users
+    name: user
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5132/users
+    url: jdbc:postgresql://localhost:5132/user
     username: casino
     password: password
   jpa:
