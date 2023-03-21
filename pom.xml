@@ -11,6 +11,7 @@
 	<description>REST API for casino</description>
 	<modules>
 		<module>users</module>
+		<module>cash</module>
 	</modules>
 
 	<properties>
