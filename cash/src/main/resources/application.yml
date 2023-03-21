@@ -1,0 +1,16 @@
+server:
+  port: 2137
+spring:
+  application:
+    name: user
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5132/cash
+    username: casino
+    password: password
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
