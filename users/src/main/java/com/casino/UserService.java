@@ -3,7 +3,6 @@ package com.casino;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -17,8 +16,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RestTemplate restTemplate;
 
     public List<User> getUsers() {
         return userRepository.findAll().stream()
@@ -41,7 +38,7 @@ public class UserService {
                 .build();
         userRepository.saveAndFlush(user);
 
-        URL url = new URL(String.format("http://localhost:8081/api/v1/cash?userId=%d", user.getId()));
+        URL url = new URL(String.format("http://localhost:8081/api/v1/cash?name=%s", user.getName()));
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 

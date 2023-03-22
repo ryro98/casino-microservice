@@ -37,7 +37,7 @@ public class UserController {
             User user = userService.getUserById(id);
             return ResponseEntity.status(OK).body(user);
         } else {
-            return ResponseEntity.status(NOT_FOUND).body("User with given in does not exist.");
+            return ResponseEntity.status(NOT_FOUND).body("User with given id does not exist.");
         }
     }
 

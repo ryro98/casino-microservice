@@ -23,13 +23,22 @@ public class CashService {
         return cashRepository.findById(id).orElseThrow(CashNotFoundException::new);
     }
 
-    public Cash getCashByUserId(Integer userId) throws CashNotFoundException {
-        return cashRepository.findCashByUserId(userId).orElseThrow(CashNotFoundException::new);
+    public Cash getCashByUserName(String name) throws CashNotFoundException {
+        return cashRepository.findCashByUserName(name).orElseThrow(CashNotFoundException::new);
     }
 
-    public Cash createCash(Integer userId) {
+    public List<Cash> getCashTop10() {
+        return cashRepository.findAll().stream()
+                .filter(cash -> cash.getCash() != null)
+                .filter(cash -> cash.getCash() > 0)
+                .sorted(Comparator.comparing(Cash::getCash).reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public Cash createCash(String name) {
         Cash cash = Cash.builder()
-                .userId(userId)
+                .userName(name)
                 .cash(0)
                 .getCashTimer(LocalDateTime.now().minusDays(1))
                 .gambleTimer(LocalDateTime.now().minusDays(1))
@@ -38,8 +47,8 @@ public class CashService {
         return cash;
     }
 
-    public Cash addCash(Integer userId) throws CashNotFoundException {
-        Cash cash = cashRepository.findCashByUserId(userId).orElseThrow(CashNotFoundException::new);
+    public Cash addCash(String name) throws CashNotFoundException {
+        Cash cash = cashRepository.findCashByUserName(name).orElseThrow(CashNotFoundException::new);
 
         LocalDateTime time = LocalDateTime.now();
         LocalDateTime customer_timer = cash.getGetCashTimer();
@@ -53,8 +62,8 @@ public class CashService {
         return cash;
     }
 
-    public Cash gambleCash(Integer userId, Integer money) throws CashNotFoundException {
-        Cash cash = cashRepository.findCashByUserId(userId).orElseThrow(CashNotFoundException::new);
+    public Cash gambleCash(String name, Integer money) throws CashNotFoundException {
+        Cash cash = cashRepository.findCashByUserName(name).orElseThrow(CashNotFoundException::new);
 
         LocalDateTime time = LocalDateTime.now();
         LocalDateTime customer_timer = cash.getGambleTimer();
@@ -85,4 +94,6 @@ public class CashService {
     public void deleteCash(Integer id) {
         cashRepository.deleteById(id);
     }
+
+
 }
