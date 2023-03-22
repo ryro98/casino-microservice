@@ -7,6 +7,6 @@ import java.util.Optional;
 
 @Repository
 public interface CashRepository extends JpaRepository<Cash, Integer> {
-    boolean existsCashByUserId(Integer id);
-    Optional<Cash> findCashByUserId(Integer userId);
+    boolean existsCashByUserName(String name);
+    Optional<Cash> findCashByUserName(String name);
 }

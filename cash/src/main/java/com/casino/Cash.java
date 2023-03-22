@@ -24,7 +24,7 @@ public class Cash {
             generator = "cash_id_sequence"
     )
     private Integer id;
-    private Integer userId;
+    private String userName;
     private Integer cash;
     private LocalDateTime getCashTimer;
     private LocalDateTime gambleTimer;

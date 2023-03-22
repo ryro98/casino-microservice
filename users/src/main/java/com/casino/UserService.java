@@ -41,7 +41,7 @@ public class UserService {
                 .build();
         userRepository.saveAndFlush(user);
 
-        URL url = new URL(String.format("http://localhost:8081/api/v1/cash?userId=%d", user.getId()));
+        URL url = new URL(String.format("http://localhost:8081/api/v1/cash?name=%s", user.getName()));
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
 
