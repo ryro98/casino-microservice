@@ -1,9 +1,7 @@
 package com.casino;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -17,8 +15,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private RestTemplate restTemplate;
 
     public List<User> getUsers() {
         return userRepository.findAll().stream()
@@ -35,7 +31,7 @@ public class UserService {
         return userRepository.findUserByName(name).orElseThrow(UserNotFoundException::new);
     }
 
-    public User createUser(UserCreateRequest request) throws JSONException, IOException {
+    public User createUser(UserCreateRequest request) throws IOException {
         User user = User.builder()
                 .name(request.getName())
                 .build();
