@@ -94,6 +94,4 @@ public class CashService {
     public void deleteCash(Integer id) {
         cashRepository.deleteById(id);
     }
-
-
 }
