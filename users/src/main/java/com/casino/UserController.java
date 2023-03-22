@@ -1,9 +1,11 @@
 package com.casino;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -52,7 +54,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(value = CREATED)
-    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request) {
+    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request) throws JSONException, IOException {
         if (request.getName().isEmpty()) {
             return ResponseEntity.status(BAD_REQUEST).body("Name cannot be empty.");
         }

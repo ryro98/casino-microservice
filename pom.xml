@@ -12,11 +12,12 @@
 	<modules>
 		<module>users</module>
 		<module>cash</module>
+		<module>eureka_server</module>
 	</modules>
 
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.1</spring-cloud.version>
+		<spring-cloud.version>2020.0.3</spring-cloud.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<spring.boot.maven.plugin.version>2.5.7</spring.boot.maven.plugin.version>
